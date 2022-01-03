@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import type {NextPage, GetServerSideProps } from 'next'
 import Card from '../components/card'
+import { ReactNode } from 'react'
 
 //interface propType {
 //    id: string
@@ -13,7 +14,7 @@ import Card from '../components/card'
 // 
 //}
 
-const User:NextPage = (props) => {
+const User:NextPage = (props:ReactNode) => {
   const albumCards = props.data.map(item => {
     return (
       <Card key={item.id} id={item.id} coverImage={item.imageLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
