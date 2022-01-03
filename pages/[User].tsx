@@ -14,7 +14,7 @@ import Card from '../components/card'
 //}
 
 const User:NextPage = (props) => {
-  const albumCards = porps.data.map(item => {
+  const albumCards = props.data.map(item => {
     return (
       <Card key={item.id} id={item.id} coverImage={item.imageLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
     )
