@@ -21,8 +21,11 @@ type Data = {
   imageLink: string
 }
 
+
+
+
 const User:NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const albumCards = data.map(item => {
+  const albumCards = data.map((item:any) => {
     return (
       <Card key={item.id} id={item.id} coverImage={item.imageLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
     )
@@ -45,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const apiURL = process.env.IMGUR_BASE_URL + `/account/${User}/submissions`
     
     const res = await axios.get(apiURL, header)
-    const data = res.data.data.map(item => {
+    const data = res.data.data.map((item:any) => {
       return {
         id: item.id,
         title: item.title,
