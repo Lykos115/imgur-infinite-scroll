@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import type {NextPage, GetServerSideProps } from 'next'
+import type {NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Card from '../components/card'
 import { ReactNode } from 'react'
 
@@ -13,9 +13,16 @@ import { ReactNode } from 'react'
 //    coverHeight: number
 // 
 //}
+//
+type Data = {
+  id: string
+  title: string
+  coverId: string
+  imageLink: string
+}
 
-const User:NextPage = (props:ReactNode) => {
-  const albumCards = props.data.map(item => {
+const User:NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const albumCards = data.map(item => {
     return (
       <Card key={item.id} id={item.id} coverImage={item.imageLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
     )
@@ -43,8 +50,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         id: item.id,
         title: item.title,
         coverId: item.cover,
-        coverWidth: item.cover_width,
-        coverHeight: item.cover_height,
         imageLink: item.images[0].link
       }  
     })
