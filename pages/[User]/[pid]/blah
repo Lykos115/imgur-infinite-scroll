@@ -1,0 +1,23 @@
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { User, pid} = context.query
+
+
+  const url = process.env.IMGUR_BASE_URL + `/account/${User}/albums/ids/${pid}`;
+  const headers = {
+    headers: {
+      Authorization: `Client-ID ${process.env.IMGUR_KEY}`
+    }
+  };
+
+
+  const data = await axios.get(url, headers)
+  const route = `/api/${User}/albumIds?page=${pid}`
+  return { 
+    props: {
+        fallback: {
+            [route]: data
+          }
+      } 
+    }
+}

@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import type {NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import Card from '../components/card'
-import { ReactNode } from 'react'
+import Card from '../../../components/card'
 
 //interface propType {
 //    id: string
@@ -39,13 +38,15 @@ const User:NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSid
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const { User } = context.query
+    const { User, pid } = context.query
+    console.log(pid)
     const header = {
       headers:{
         'Authorization': `Client-ID ${process.env.IMGUR_KEY}`
       }
     }
-    const apiURL = process.env.IMGUR_BASE_URL + `/account/${User}/submissions`
+    const pageNumber = Number(pid) - 1
+    const apiURL = process.env.IMGUR_BASE_URL + `/account/${User}/submissions/${pageNumber}`
     
     const res = await axios.get(apiURL, header)
     const data = res.data.data.map((item:any) => {
