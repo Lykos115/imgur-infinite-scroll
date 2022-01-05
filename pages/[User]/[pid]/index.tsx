@@ -24,6 +24,10 @@ type Data = {
 
 
 const User:NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const router = useRouter()
+  const { User, pid } = router.query
+  const pageNext = (Number(pid) + 1).toString()
+  const pagePrev = (Number(pid) - 1).toString()
   const albumCards = data.map((item:any) => {
     return (
       <Card key={item.id} id={item.id} coverImage={item.imageLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
@@ -32,6 +36,29 @@ const User:NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSid
   return (
     <div className='flex flex-wrap p-4 justify-center items-center bg-slate-800'>
       {albumCards}
+      <div className='flex-row space-x-4 p-4'>
+        <button
+          onClick={() => {
+              router.push({
+                pathname: '/[User]/[pid]',
+                query: {
+                  pid:pagePrev,
+                  User: User
+                },
+              })
+            }}>Prev</button>
+
+        <button
+          onClick={() =>{
+              router.push({
+                pathname: '/[User]/[pid]',
+                query: {
+                  pid:pageNext,
+                  User: User
+                },
+              })
+            }}>Next</button>
+      </div>
     </div>
   )
 }
@@ -39,7 +66,6 @@ const User:NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSid
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const { User, pid } = context.query
-    console.log(pid)
     const header = {
       headers:{
         'Authorization': `Client-ID ${process.env.IMGUR_KEY}`
@@ -47,7 +73,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
     const pageNumber = Number(pid) - 1
     const apiURL = process.env.IMGUR_BASE_URL + `/account/${User}/submissions/${pageNumber}`
-    
     const res = await axios.get(apiURL, header)
     const data = res.data.data.map((item:any) => {
       return {
@@ -58,7 +83,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }  
     })
 
-    console.log(apiURL)
     return {
       props: { data }
     }
