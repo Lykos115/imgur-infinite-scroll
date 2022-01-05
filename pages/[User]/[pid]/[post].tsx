@@ -28,6 +28,7 @@ const UserPost:NextPage = () => {
   const { User, pid, post} = router.query
   const url = `/api/${User}/albumIds?page=${pid}`
   const { data } = useSWR(url, fetcher)
+  if(!data) return <div>loading...</div>
   console.log(data.response.indexOf(post))
   return <div>testing PID</div>
 }
