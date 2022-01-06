@@ -21,7 +21,14 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
     .get(url, headers)
     .then(({ data }) => {
       console.log(data)
-      const  response = data.data.map(item => item.id)
+      const  response = data.data.map(item =>{
+        return {
+          id:item.id,
+          coverId: item.cover,
+          title: item.title,
+          coverLink: item.images[0].link
+        }
+      })
       res.status(200).json({response});
     })
     .catch(({ err }) =>{
