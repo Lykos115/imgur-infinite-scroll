@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { albumHash } = req.query
   const url = process.env.IMGUR_BASE_URL + `/album/${albumHash}/images`
   const headers = {
