@@ -48,17 +48,19 @@ const UserPost:NextPage<fallbackType> = ({ fallback }) => {
 
   return (
   <SWRConfig value={{ fallback }}>
-    <div className='hidden'><Post post={nextPostId} /></div>
-    <Post post={postId} />
-    <button className='bg-gray-800 w-12 h-12 text-white'
-      onClick={() => router.push({
-        pathname:'/[User]/[pid]/[post]',
-        query: {
-          User:User,
-          pid:[nextPid],
-          post:[nextPostId]
-        }
-      })}> next </button>
+    <div className='bg-slate-800'>
+      <div className='hidden'><Post post={nextPostId} /></div>
+      <Post post={postId} />
+      <button className='bg-gray-800 w-12 h-12 text-white'
+        onClick={() => router.push({
+          pathname:'/[User]/[pid]/[post]',
+          query: {
+            User:User,
+            pid:[nextPid],
+            post:[nextPostId]
+          }
+        })}> next </button>
+    </div>
   </SWRConfig>
 
 )}
