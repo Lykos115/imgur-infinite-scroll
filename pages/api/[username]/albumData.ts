@@ -1,8 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from 'axios';
 
+type Info = {
+  id: string
+  coverId: string
+  title: string
+  coverlink: string
+}
+
 type Data = {
-  albumIds: any[];
+  albumIds: Info[];
   success: boolean;
   status: number;
 }
@@ -21,7 +28,7 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
     .get(url, headers)
     .then(({ data }) => {
       console.log(data)
-      const  response = data.data.map(item =>{
+      const  response = data.data.map((item:any) =>{
         return {
           id:item.id,
           coverId: item.cover,
