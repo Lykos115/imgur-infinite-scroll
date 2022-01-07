@@ -15,7 +15,13 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   await axios
           .get(url, headers)
           .then(({ data }) => {
-            const response = data.data.map((item:any) => item.link)
+            const response = data.data.map((item:any) => {
+              return {
+                link: item.link,
+                width: item.width,
+                height: item.height
+              }
+            }) 
             res.status(200).json({ response })
           })
           .catch(({err}) => {
