@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import axios from 'axios';
 
 type Data = {
-  albumIds: string[];
-  success: boolean;
-  status: number;
+  albumIds?: string[];
+  success?: boolean;
+  status?: number;
 }
 
 export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
@@ -21,10 +21,10 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
     .get(url, headers)
     .then(({ data }) => {
       console.log(data)
-      const  response = data.data.map(item => item.id)
-      res.status(200).json({response});
+      const  response = data.data.map((item:any) => item.id)
+      res.status(200).json({response} as Data);
     })
     .catch(({ err }) =>{
-      res.status(400).json({ err });
+      res.status(400).json({ err } as Data);
     })
 }

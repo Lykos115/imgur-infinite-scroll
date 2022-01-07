@@ -36,9 +36,9 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
           coverLink: item.images[0].link
         }
       })
-      res.status(200).json({response});
+      res.status(200).json({response} as any);
     })
     .catch(({ err }) =>{
-      res.status(400).json({ err });
+      res.status(400).json({ err } as any);
     })
 }
