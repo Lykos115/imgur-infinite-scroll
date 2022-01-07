@@ -1,5 +1,6 @@
 import axios from 'axios'
 import type {GetServerSideProps, NextPage} from 'next'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import useSWR, { SWRConfig } from 'swr'
 
@@ -18,9 +19,8 @@ const fetcher = (url:string) => axios.get(url).then(res => res.data)
 const Post = ({post}: postType) => {
   const { data } = useSWR(`/api/album/${post}`, fetcher)
   if(!data) return <div> loading ... </div>
-  const imageList = data.response.map((item:string) => <img src={item} className='w-full h-auto p-4' />)
-
-  return <div className='p-4'>{imageList}</div> 
+  const imageList = data.response.map((item:string, i: number) => <Image width={540} height={680} key={'fhsaodf' + i} src={item} className='h-auto m-4' alt='placeholder' />)
+  return <div className='flex flex-col p-4 w-1/2 h-auto'>{imageList}</div> 
   
  }
 
