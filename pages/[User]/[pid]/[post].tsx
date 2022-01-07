@@ -1,42 +1,57 @@
 import axios from 'axios'
-import type {GetServerSideProps, InferGetServerSidePropsType, NextPage} from 'next'
+import type {GetServerSideProps, NextPage} from 'next'
 import { useRouter } from 'next/router'
 import useSWR, { SWRConfig } from 'swr'
 
 
-type Data = {
-  fallback: any
+type fallbackType = {
+  [key: string]: string[]
 }
+
+type postType = {
+  post: string
+}
+
 
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
-const Post = ({pageNum}) => {
-  const router = useRouter()
-  const { User } = router.query
-  const { data } = useSWR(`/api/${User}/albumIds?page=${pageNum}`, fetcher)
+const Post = ({post}: postType) => {
+  const { data } = useSWR(`/api/album/${post}`, fetcher)
   if(!data) return <div> loading ... </div>
+  const imageList = data.response.map((item:string) => <img src={item} className='w-full h-auto p-4' />)
 
-  return <div>testing PID</div>
+  return <div className='p-4'>{imageList}</div> 
   
  }
 
-const UserPost:NextPage = ({ fallback }) =>{ 
+const UserPost:NextPage<fallbackType> = ({ fallback }) => { 
+  console.log(fallback )
   const router = useRouter()
   const { User, pid, post } = router.query
-  const { data } = useSWR(`/api/${User}/albumIds?page=${pid}`, fetcher)
-  const nextPost = data.response.indexOf(post) + 1
-  const nextPostId = data.response[nextPost]
-  console.log(nextPostId)
+
+  const { data: firstArr } = useSWR(`/api/${User}/albumIds?page=${pid}`, fetcher)
+  const { data: secondArr } = useSWR(`/api/${User}/albumIds?page=${Number(pid) + 1}`, fetcher)
+  
+  if(!firstArr || !secondArr) return <div> loading... </div>
+  const postPos = firstArr.response.indexOf(post) + 1;
+
+  const nextPost = postPos === 60 ? 0 : postPos
+  const nextPid = postPos === 60 ? Number(pid) + 1 : Number(pid)
+  const prevPid = Number(pid) - 1 
+  const nextPostId = postPos === 60 ? secondArr.response[nextPost] : firstArr.response[nextPost]
+
+
+
   return (
   <SWRConfig value={{ fallback }}>
-    <div className='hidden'><Post pageNum={pid} /></div>
-    <Post pageNum={pid} />
+    <div className='hidden'><Post post={nextPostId} /></div>
+    <Post post={post} />
     <button className='bg-gray-800 w-12 h-12 text-white'
       onClick={() => router.push({
         pathname:'/[User]/[pid]/[post]',
         query: {
           User:User,
-          pid:pid,
+          pid:[nextPid],
           post:[nextPostId]
         }
       })}> next </button>
@@ -46,21 +61,21 @@ const UserPost:NextPage = ({ fallback }) =>{
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const { User, pid } = context.query
+    const { post } = context.query
     const header = {
       headers:{
         'Authorization': `Client-ID ${process.env.IMGUR_KEY}`
       }
     }
-    const pageNumber = Number(pid) - 1
-    const apiURL = `/account/${User}/submissions/${pageNumber}`
+    const apiURL = `/album/${post}/images`
+    const fallbackUrl = '/api/' + apiURL
     const res = await axios.get(process.env.IMGUR_BASE_URL + apiURL, header)
-    const data = res.data.data.map((item:any) => item.id)
+    const data = res.data.data.map((item:any) => item.link)
 
     return {
       props: { 
         fallback: {
-          [apiURL]: data
+          [fallbackUrl]: data
         }
       }
     }
