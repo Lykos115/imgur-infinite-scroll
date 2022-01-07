@@ -39,13 +39,13 @@ const UserPost:NextPage<fallbackType> = ({ fallback }) => {
   const nextPid = postPos === 60 ? Number(pid) + 1 : Number(pid)
   const prevPid = Number(pid) - 1 
   const nextPostId = postPos === 60 ? secondArr.response[nextPost] : firstArr.response[nextPost]
-
-
+  
+  const postId: string = post as string
 
   return (
   <SWRConfig value={{ fallback }}>
     <div className='hidden'><Post post={nextPostId} /></div>
-    <Post post={post} />
+    <Post post={postId} />
     <button className='bg-gray-800 w-12 h-12 text-white'
       onClick={() => router.push({
         pathname:'/[User]/[pid]/[post]',
