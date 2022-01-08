@@ -18,6 +18,8 @@ type Data = {
   title: string
   coverId: string
   imageLink: string
+  coverWidth: number
+  coverHeight: number
 }
 
 
@@ -79,7 +81,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         id: item.id,
         title: item.title,
         coverId: item.cover,
-        imageLink: item.images[0].link
+        imageLink: item.images[0].link,
+        coverHeight: item.images[0].height,
+        coverWidth: item.images[0].width
       }  
     })
 

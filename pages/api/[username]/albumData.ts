@@ -6,6 +6,8 @@ type Info = {
   coverId: string
   title: string
   coverlink: string
+  coverWidth: number
+  coverHeight: number
 }
 
 type Data = {
@@ -33,7 +35,9 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
           id:item.id,
           coverId: item.cover,
           title: item.title,
-          coverLink: item.images[0].link
+          coverLink: item.images[0].link,
+          coverWidth: item.images[0].width,
+          coverHeight: item.images[0].heigth
         }
       })
       res.status(200).json({response} as any);

@@ -1,5 +1,7 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
+import Image from "next/image"
+
 
 interface cardProps{
   title: string;
@@ -13,13 +15,14 @@ const card = (props: cardProps) =>{
  const router = useRouter()
  const {User, pid} = router.query
   return(
-  
-    <Link href={`/${User}/${pid}/${props.id}`}>
-      <div className='w-60 h-60 m-4 rounded-xl bg-black relative'>
-        <img src={props.coverImage} className='w-full h-full rounded-xl'/>
-        <div className='rounded-b-xl w-full absolute inset-x-0 bottom-0 p-4 bg-slate-900 opacity-50 text-white'>{props.title}</div> 
-      </div>
-    </Link>
+    <div className='m-4 w-60 h-auto'>
+      <Link href={`/${User}/${pid}/${props.id}`}>
+        <div className='relative'>
+          <Image width={props.coverWidth} height={props.coverHeight} src={props.coverImage} className='w-full h-full rounded-xl'/>
+          <div className='rounded-b-xl w-full absolute inset-x-0 bottom-1.5 p-4 bg-slate-900 opacity-50 text-white'>{props.title}</div> 
+        </div>
+      </Link>
+    </div>
   )
 }
 export default card
