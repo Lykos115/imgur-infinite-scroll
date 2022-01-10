@@ -23,9 +23,14 @@ type Data = {
   coverHeight: number
 }
 
+type albumType = {
+  User: string
+  pid: string
+}
+
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
-const AlbumCards = ({User, pid}) => {
+const AlbumCards = ({User, pid}: albumType) => {
   const {data} = useSWR(`/api/${User}/albumData?page=${pid}`, fetcher)
   if(!data) return <div>loading ... </div>
   console.log(data.response[2])
@@ -42,10 +47,12 @@ const User:NextPage = ({ fallback }: InferGetServerSidePropsType<typeof getServe
   const { User, pid } = router.query
   const pageNext = (Number(pid) + 1).toString()
   const pagePrev = (Number(pid) - 1).toString()
+  const username: string = User as string
+  const pageId: string = pid as string
   return (
     <SWRConfig value={{fallback}}>
-      <AlbumCards User={User} pid={pid}/>
-      <div className='hidden'><AlbumCards User={User} pid={pageNext} /></div>
+      <AlbumCards User={username} pid={pageId}/>
+      <div className='hidden'><AlbumCards User={username} pid={pageId} /></div>
       <div className='flex justify-center items-center bg-slate-800'>
         <div className='flex-row space-x-4 p-4'>
           <button
