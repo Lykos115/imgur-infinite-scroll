@@ -29,7 +29,6 @@ const Post = ({post}: postType) => {
  }
 
 const UserPost:NextPage<fallbackType> = ({ fallback }) => { 
-  console.log(fallback )
   const router = useRouter()
   const { User, pid, post } = router.query
 
@@ -51,15 +50,26 @@ const UserPost:NextPage<fallbackType> = ({ fallback }) => {
     <div className='bg-slate-800'>
       <div className='hidden'><Post post={nextPostId} /></div>
       <Post post={postId} />
-      <button className='bg-gray-800 w-12 h-12 text-white'
-        onClick={() => router.push({
-          pathname:'/[User]/[pid]/[post]',
-          query: {
-            User:User,
-            pid:[nextPid],
-            post:[nextPostId]
-          }
-        })}> next </button>
+      <div>
+        <button className='bg-gray-800 w-12 h-12 text-white'
+          onClick={() => router.push({
+            pathname:'/[User]/[pid]/[post]',
+            query: {
+              User:User,
+              pid:[prevPid],
+              post:[nextPostId]
+            }
+          })}> prev </button>
+        <button className='bg-gray-800 w-12 h-12 text-white'
+          onClick={() => router.push({
+            pathname:'/[User]/[pid]/[post]',
+            query: {
+              User:User,
+              pid:[nextPid],
+              post:[nextPostId]
+            }
+          })}> next </button>
+      </div>
     </div>
   </SWRConfig>
 

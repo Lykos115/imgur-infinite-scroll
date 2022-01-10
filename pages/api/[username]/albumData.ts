@@ -29,7 +29,6 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
   await axios
     .get(url, headers)
     .then(({ data }) => {
-      console.log(data)
       const  response = data.data.map((item:any) =>{
         return {
           id:item.id,
@@ -37,7 +36,7 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
           title: item.title,
           coverLink: item.images[0].link,
           coverWidth: item.images[0].width,
-          coverHeight: item.images[0].heigth
+          coverHeight: item.images[0].height
         }
       })
       res.status(200).json({response} as any);

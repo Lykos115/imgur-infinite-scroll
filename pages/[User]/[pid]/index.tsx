@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import type {NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Card from '../../../components/card'
+import useSWR, { SWRConfig } from 'swr'
 
 //interface propType {
 //    id: string
@@ -22,46 +23,55 @@ type Data = {
   coverHeight: number
 }
 
+const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
+const AlbumCards = ({User, pid}) => {
+  const {data} = useSWR(`/api/${User}/albumData?page=${pid}`, fetcher)
+  if(!data) return <div>loading ... </div>
+  console.log(data.response[2])
+  const albums = data.response.map((item:any) => {
+    return (
+      <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
+    )
+  })
+  return (<div className='flex flex-wrap p-4 justify-center items-center bg-slate-800'>{albums}</div>)
+}
 
-
-const User:NextPage = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const User:NextPage = ({ fallback }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter()
   const { User, pid } = router.query
   const pageNext = (Number(pid) + 1).toString()
   const pagePrev = (Number(pid) - 1).toString()
-  const albumCards = data.map((item:any) => {
-    return (
-      <Card key={item.id} id={item.id} coverImage={item.imageLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
-    )
-  })
   return (
-    <div className='flex flex-wrap p-4 justify-center items-center bg-slate-800'>
-      {albumCards}
-      <div className='flex-row space-x-4 p-4'>
-        <button
-          onClick={() => {
-              router.push({
-                pathname: '/[User]/[pid]',
-                query: {
-                  pid:pagePrev,
-                  User: User
-                },
-              })
-            }}>Prev</button>
+    <SWRConfig value={{fallback}}>
+      <AlbumCards User={User} pid={pid}/>
+      <div className='hidden'><AlbumCards User={User} pid={pageNext} /></div>
+      <div className='flex justify-center items-center bg-slate-800'>
+        <div className='flex-row space-x-4 p-4'>
+          <button
+            onClick={() => {
+                router.push({
+                  pathname: '/[User]/[pid]',
+                  query: {
+                    pid:pagePrev,
+                    User: User
+                  },
+                })
+              }}>Prev</button>
 
-        <button
-          onClick={() =>{
-              router.push({
-                pathname: '/[User]/[pid]',
-                query: {
-                  pid:pageNext,
-                  User: User
-                },
-              })
-            }}>Next</button>
+          <button
+            onClick={() =>{
+                router.push({
+                  pathname: '/[User]/[pid]',
+                  query: {
+                    pid:pageNext,
+                    User: User
+                  },
+                })
+              }}>Next</button>
+        </div>
       </div>
-    </div>
+    </SWRConfig>
   )
 }
 
@@ -74,7 +84,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }
     }
     const pageNumber = Number(pid) - 1
-    const apiURL = process.env.IMGUR_BASE_URL + `/account/${User}/submissions/${pageNumber}`
+    const url = `/account/${User}/submissions/${pageNumber}`
+    const fallBack = '/api' + url
+
+    const apiURL = process.env.IMGUR_BASE_URL + url
+
     const res = await axios.get(apiURL, header)
     const data = res.data.data.map((item:any) => {
       return {
@@ -88,7 +102,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     })
 
     return {
-      props: { data }
+      props: {
+        fallback: {
+          [fallBack]: data
+        }
+      }
     }
   } catch(error) {
     return { props: { "error": "not working" } }
