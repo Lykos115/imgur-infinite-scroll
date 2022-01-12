@@ -20,8 +20,7 @@ type itemType = {
 
 type albumType = {
   [key:string]: {
-    User: string
-    pid: string
+    response:itemType[]
   }
 }
 
