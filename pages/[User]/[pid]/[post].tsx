@@ -42,7 +42,7 @@ const UserPost:NextPage<fallbackType> = ({ fallback }) => {
   const { data: firstArr } = useSWR(`/api/${User}/albumIds?page=${pid}`, fetcher)
   const { data: secondArr } = useSWR(`/api/${User}/albumIds?page=${Number(pid) + 1}`, fetcher)
   
-  if(!firstArr || !secondArr) return <div> loading... </div>
+  if(!firstArr || !secondArr || !router.isFallback) return <div> loading... </div>
   const postPos = firstArr.response.indexOf(post) + 1;
 
   const nextPost = postPos === 60 ? 0 : postPos

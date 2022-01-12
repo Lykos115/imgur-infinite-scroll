@@ -42,6 +42,7 @@ const User: NextPage<Data> = ({ fallback })=> {
   const pagePrev = (Number(pid) - 1).toString()
   const username: string = User as string
   const pageId: string = pid as string
+  if(!router.isFallback) return <div> loading... </div>
   return (
     <SWRConfig value={{fallback}}>
       <AlbumCards User={username} pid={pageId}/>
