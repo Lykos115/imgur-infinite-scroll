@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from 'axios';
-import { getSession } from "next-auth/react"
 
 type Info = {
   id: string
@@ -26,7 +25,6 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
       Authorization: `Client-ID ${process.env.IMGUR_KEY}`
     }
   };
-  console.log(url)
   await axios
     .get(url, headers)
     .then(({ data }) => {

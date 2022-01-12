@@ -1,5 +1,6 @@
 import axios from 'axios'
-import type {GetServerSideProps, NextPage} from 'next'
+import { warn } from 'console'
+import type {GetStaticProps, NextPage, GetStaticPaths} from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import useSWR, { SWRConfig } from 'swr'
@@ -13,13 +14,19 @@ type postType = {
   post: string
 }
 
+type itemType = {
+  width: number
+  height: number
+  link: string
+}
+
 
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
 const Post = ({post}: postType) => {
   const { data } = useSWR(`/api/album/${post}`, fetcher)
   if(!data) return <div> loading ... </div>
-  const imageList = data.response.map((item:any, i: number) => { return (
+  const imageList = data.response.map((item:itemType, i: number) => { return (
       <div className='w-[42rem] h-auto p-4'>
         <Image layout='responsive' width={item.width} height={item.height} key={'fhsaodf' + i} src={item.link} alt='placeholder' />
       </div>
@@ -75,9 +82,12 @@ const UserPost:NextPage<fallbackType> = ({ fallback }) => {
 
 )}
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   try {
-    const { post } = context.query
+    type paramType = {
+      post: string
+    }
+    const { post }:paramType = context.params as paramType
     const header = {
       headers:{
         'Authorization': `Client-ID ${process.env.IMGUR_KEY}`
@@ -100,6 +110,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
+export const getStaticPaths: GetStaticPaths = async () => {
+
+  return {paths:[], fallback: true}
+}
 
 
 export default UserPost

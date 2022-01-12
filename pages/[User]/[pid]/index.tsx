@@ -1,24 +1,18 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import type {NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import type {GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Card from '../../../components/card'
 import useSWR, { SWRConfig } from 'swr'
 
-//interface propType {
-//    id: string
-//    title: string
-//    coverId: string
-//    coverImage: string
-//    coverWidth: number
-//    coverHeight: number
-// 
-//}
-//
 type Data = {
-  id: string
-  title: string
-  coverId: string
-  imageLink: string
+  [key:string]: itemType
+}
+
+type itemType = {
+  id:string
+  title:string
+  coverId:string
+  coverLink: string
   coverWidth: number
   coverHeight: number
 }
@@ -33,8 +27,7 @@ const fetcher = (url:string) => axios.get(url).then(res => res.data)
 const AlbumCards = ({User, pid}: albumType) => {
   const {data} = useSWR(`/api/${User}/albumData?page=${pid}`, fetcher)
   if(!data) return <div>loading ... </div>
-  console.log(data.response[2])
-  const albums = data.response.map((item:any) => {
+  const albums = data.response.map((item:itemType) => {
     return (
       <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
     )
@@ -42,7 +35,7 @@ const AlbumCards = ({User, pid}: albumType) => {
   return (<div className='flex flex-wrap p-4 justify-center items-center bg-slate-800'>{albums}</div>)
 }
 
-const User:NextPage = ({ fallback }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const User: NextPage<Data> = ({ fallback })=> {
   const router = useRouter()
   const { User, pid } = router.query
   const pageNext = (Number(pid) + 1).toString()
@@ -82,9 +75,15 @@ const User:NextPage = ({ fallback }: InferGetServerSidePropsType<typeof getServe
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
+
+
   try {
-    const { User, pid } = context.query
+    type paramType = {
+      User:string
+      pid:string
+    }
+    const { User, pid }:paramType = context.params as paramType
     const header = {
       headers:{
         'Authorization': `Client-ID ${process.env.IMGUR_KEY}`
@@ -102,7 +101,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         id: item.id,
         title: item.title,
         coverId: item.cover,
-        imageLink: item.images[0].link,
+        coverLink: item.images[0].link,
         coverHeight: item.images[0].height,
         coverWidth: item.images[0].width
       }  
@@ -119,5 +118,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: { "error": "not working" } }
   }
 }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = [{params: {User:'MetaPathos',pid:'1'}}]
+  return {paths, fallback: true}
+}
+
 
 export default User

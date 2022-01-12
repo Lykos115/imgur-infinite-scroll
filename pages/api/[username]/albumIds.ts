@@ -20,7 +20,6 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
   await axios
     .get(url, headers)
     .then(({ data }) => {
-      console.log(data)
       const  response = data.data.map((item:any) => item.id)
       res.status(200).json({response} as Data);
     })
