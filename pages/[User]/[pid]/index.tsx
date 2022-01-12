@@ -2,11 +2,11 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import type {GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Card from '../../../components/card'
-import useSWR, { SWRConfig } from 'swr'
 import Loading from '../../../components/load'
+import Link from 'next/link'
 
 type Data = {
-  [key:string]: itemType
+  data: itemType[]
 }
 
 type itemType = {
@@ -18,16 +18,8 @@ type itemType = {
   coverHeight: number
 }
 
-type albumType = {
-  [key:string]: {
-    response:itemType[]
-  }
-}
-
-const fetcher = (url:string) => axios.get(url).then(res => res.data)
-
-const AlbumCards = ({data}: albumType) => {
-    const albums = data.response.map((item:itemType) => {
+const AlbumCards = ({data}: Data) => {
+    const albums = data.map((item:itemType) => {
     return (
       <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
     )
@@ -35,17 +27,15 @@ const AlbumCards = ({data}: albumType) => {
   return (<div className='flex flex-wrap p-4 justify-center items-center bg-slate-800'>{albums}</div>)
 }
 
-const User: NextPage<Data> = ({ fallback })=> {
+const User: NextPage<Data> = ({ data })=> {
   const router = useRouter()
   const { User, pid } = router.query
   const pageNext = (Number(pid) + 1).toString()
   const pagePrev = (Number(pid) - 1).toString()
-  const {data} = useSWR(`/api/${User}/albumData?page=${pid}`, fetcher)
-  if(router.isFallback || !data) return <Loading /> 
+  if(router.isFallback) return <Loading /> 
   return (
-    <SWRConfig value={{fallback}}>
+  <>
       <AlbumCards data={data}/>
-      <div className='hidden'><AlbumCards data={data} /></div>
       <div className='flex justify-center items-center bg-slate-800'>
         <div className='flex-row space-x-4 p-4'>
           <button
@@ -59,19 +49,16 @@ const User: NextPage<Data> = ({ fallback })=> {
                 })
               }}>Prev</button>
 
-          <button
-            onClick={() =>{
-                router.push({
-                  pathname: '/[User]/[pid]',
-                  query: {
-                    pid:pageNext,
-                    User: User
-                  },
-                })
-              }}>Next</button>
+          <Link href={{
+            pathname:'/[User]/[pid]',
+            query:{
+              pid:pageNext,
+              User:User
+            }
+          }}>next</Link>
         </div>
       </div>
-    </SWRConfig>
+    </>
   )
 }
 
@@ -91,11 +78,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
     const pageNumber = Number(pid) - 1
     const url = `/account/${User}/submissions/${pageNumber}`
-    const fallBack = '/api' + url
 
     const apiURL = process.env.IMGUR_BASE_URL + url
 
     const res = await axios.get(apiURL, header)
+    if(!res){
+      return {
+        notFound:true
+      }
+    }
     const data = res.data.data.map((item:any) => {
       return {
         id: item.id,
@@ -109,10 +100,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     return {
       props: {
-        fallback: {
-          [fallBack]: data
-        }
-      }
+        data
+      },
+      revalidate: 60
     }
   } catch(error) {
     return { props: { "error": "not working" } }
@@ -121,7 +111,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = [{params: {User:'MetaPathos',pid:'1'}}]
-  return {paths:[], fallback: true}
+  return {paths, fallback: true}
 }
 
 
