@@ -16,7 +16,6 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
       Authorization: `Client-ID ${process.env.IMGUR_KEY}`
     }
   };
-  console.log(url)
   await axios
     .get(url, headers)
     .then(({ data }) => {

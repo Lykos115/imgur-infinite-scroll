@@ -25,7 +25,7 @@ const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
 const Post = ({post}: postType) => {
   const { data } = useSWR(`/api/album/${post}`, fetcher)
-  if(!data) return <div> loading ... </div>
+  if(!data) return <Loading /> 
   const imageList = data.response.map((item:itemType, i: number) => { return (
       <div className='w-[42rem] h-auto p-4'>
         <Image layout='responsive' width={item.width} height={item.height} key={'fhsaodf' + i} src={item.link} alt='placeholder' />
