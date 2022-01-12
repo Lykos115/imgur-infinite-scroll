@@ -42,7 +42,7 @@ const User: NextPage<Data> = ({ fallback })=> {
   const pagePrev = (Number(pid) - 1).toString()
   const username: string = User as string
   const pageId: string = pid as string
-  if(!router.isFallback) return <div> loading... </div>
+  if(router.isFallback) return <div> loading... </div>
   return (
     <SWRConfig value={{fallback}}>
       <AlbumCards User={username} pid={pageId}/>
@@ -122,7 +122,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = [{params: {User:'MetaPathos',pid:'1'}}]
-  return {paths, fallback: true}
+  return {paths:[], fallback: true}
 }
 
 
