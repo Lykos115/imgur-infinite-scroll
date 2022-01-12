@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import type {GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Card from '../../../components/card'
 import useSWR, { SWRConfig } from 'swr'
+import Loading from '../../../components/load'
 
 type Data = {
   [key:string]: itemType
@@ -18,16 +19,16 @@ type itemType = {
 }
 
 type albumType = {
-  User: string
-  pid: string
+  [key:string]: {
+    User: string
+    pid: string
+  }
 }
 
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
-const AlbumCards = ({User, pid}: albumType) => {
-  const {data} = useSWR(`/api/${User}/albumData?page=${pid}`, fetcher)
-  if(!data) return <div>loading ... </div>
-  const albums = data.response.map((item:itemType) => {
+const AlbumCards = ({data}: albumType) => {
+    const albums = data.response.map((item:itemType) => {
     return (
       <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
     )
@@ -40,13 +41,12 @@ const User: NextPage<Data> = ({ fallback })=> {
   const { User, pid } = router.query
   const pageNext = (Number(pid) + 1).toString()
   const pagePrev = (Number(pid) - 1).toString()
-  const username: string = User as string
-  const pageId: string = pid as string
-  if(router.isFallback) return <div> loading... </div>
+  const {data} = useSWR(`/api/${User}/albumData?page=${pid}`, fetcher)
+  if(router.isFallback || !data) return <Loading /> 
   return (
     <SWRConfig value={{fallback}}>
-      <AlbumCards User={username} pid={pageId}/>
-      <div className='hidden'><AlbumCards User={username} pid={pageId} /></div>
+      <AlbumCards data={data}/>
+      <div className='hidden'><AlbumCards data={data} /></div>
       <div className='flex justify-center items-center bg-slate-800'>
         <div className='flex-row space-x-4 p-4'>
           <button
