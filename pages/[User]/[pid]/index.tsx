@@ -82,7 +82,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const apiURL = process.env.IMGUR_BASE_URL + url
 
     const res = await axios.get(apiURL, header)
-    if(!res){
+    if(!res.data.data.length){
       return {
         notFound:true
       }
