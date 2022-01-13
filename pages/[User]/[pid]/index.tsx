@@ -38,16 +38,14 @@ const User: NextPage<Data> = ({ data })=> {
       <AlbumCards data={data}/>
       <div className='flex justify-center items-center bg-slate-800'>
         <div className='flex-row space-x-4 p-4'>
-          <button
-            onClick={() => {
-                router.push({
-                  pathname: '/[User]/[pid]',
-                  query: {
-                    pid:pagePrev,
-                    User: User
-                  },
-                })
-              }}>Prev</button>
+          <Link
+            href={{
+              pathname: '/[User]/[pid]',
+              query: {
+                pid:pagePrev,
+                User: User
+            }
+          }}>Prev</Link>
 
           <Link href={{
             pathname:'/[User]/[pid]',

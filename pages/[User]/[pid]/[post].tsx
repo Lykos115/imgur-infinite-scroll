@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Loading from '../../../components/load'
+import Link from 'next/link'
 
 
 type fallbackType = {
