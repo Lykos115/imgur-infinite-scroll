@@ -109,7 +109,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = [{params: {User:'MetaPathos',pid:'1'}}]
-  return {paths, fallback: true}
+  return {paths:[], fallback: true}
 }
 
 
