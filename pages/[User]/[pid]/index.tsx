@@ -32,7 +32,7 @@ const User: NextPage<Data> = ({ data })=> {
   const { User, pid } = router.query
   const pageNext = (Number(pid) + 1).toString()
   const pagePrev = (Number(pid) - 1).toString()
-  if(!router.isFallback) return <Loading /> 
+  if(router.isFallback) return <Loading /> 
   return (
   <>
       <AlbumCards data={data}/>
