@@ -12,7 +12,7 @@ type fallbackType = {
 }
 
 type postType = {
-  data:string[] 
+  data:itemType[] 
 }
 
 type itemType = {
@@ -34,7 +34,7 @@ const Post = ({data}: postType) => {
   
  }
 
-const UserPost:NextPage<fallbackType> = ({ data }) => { 
+const UserPost:NextPage<postType> = ({ data }) => { 
   const router = useRouter()
   const { User, pid, post } = router.query
 
@@ -50,7 +50,6 @@ const UserPost:NextPage<fallbackType> = ({ data }) => {
   const nextPostId = postPos === 60 ? secondArr.response[nextPost] : firstArr.response[nextPost]
   
   const postId: string = post as string
-
   return (
     <div className='bg-slate-800'>
       <Post data={data} />
