@@ -2,7 +2,7 @@ import axios from 'axios'
 import type {GetStaticProps, NextPage, GetStaticPaths} from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import useSWR, { SWRConfig } from 'swr'
+import useSWR from 'swr'
 import Loading from '../../../components/load'
 
 
@@ -11,7 +11,7 @@ type fallbackType = {
 }
 
 type postType = {
-  post: string
+  data:string[] 
 }
 
 type itemType = {
@@ -23,10 +23,8 @@ type itemType = {
 
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
-const Post = ({post}: postType) => {
-  const { data } = useSWR(`/api/album/${post}`, fetcher)
-  if(!data) return <Loading /> 
-  const imageList = data.response.map((item:itemType, i: number) => { return (
+const Post = ({data}: postType) => {
+  const imageList = data.map((item:itemType, i: number) => { return (
       <div className='w-[42rem] h-auto p-4'>
         <Image layout='responsive' width={item.width} height={item.height} key={'fhsaodf' + i} src={item.link} alt='placeholder' />
       </div>
@@ -35,7 +33,7 @@ const Post = ({post}: postType) => {
   
  }
 
-const UserPost:NextPage<fallbackType> = ({ fallback }) => { 
+const UserPost:NextPage<fallbackType> = ({ data }) => { 
   const router = useRouter()
   const { User, pid, post } = router.query
 
@@ -53,10 +51,8 @@ const UserPost:NextPage<fallbackType> = ({ fallback }) => {
   const postId: string = post as string
 
   return (
-  <SWRConfig value={{ fallback }}>
     <div className='bg-slate-800'>
-      <div className='hidden'><Post post={nextPostId} /></div>
-      <Post post={postId} />
+      <Post data={data} />
       <div>
         <button className='bg-gray-800 w-12 h-12 text-white'
           onClick={() => router.push({
@@ -78,8 +74,6 @@ const UserPost:NextPage<fallbackType> = ({ fallback }) => {
           })}> next </button>
       </div>
     </div>
-  </SWRConfig>
-
 )}
 
 export const getStaticProps: GetStaticProps = async (context) => {
@@ -94,15 +88,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
       }
     }
     const apiURL = `/album/${post}/images`
-    const fallbackUrl = '/api/' + apiURL
     const res = await axios.get(process.env.IMGUR_BASE_URL + apiURL, header)
-    const data = res.data.data.map((item:any) => item.link)
+    const data = res.data.data.map((item:any) => {
+      return {
+        link: item.link,
+        width: item.width,
+        height: item.height
+      }
+    })
 
     return {
       props: { 
-        fallback: {
-          [fallbackUrl]: data
-        }
+        data
       }
     }
   } catch(error) {
