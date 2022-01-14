@@ -37,28 +37,8 @@ const UserPost:NextPage<postType> = ({ data }) => {
   
   const postId: string = post as string
   return (
-    <div className='bg-slate-800'>
+    <div className='bg-slate-800 pt-12'>
       <Post data={data} />
-      <div>
-        <button className='bg-gray-800 w-12 h-12 text-white'
-          onClick={() => router.push({
-            pathname:'/[User]/[pid]/[post]',
-            query: {
-              User:User,
-              pid:[prevPid],
-              post:[nextPostId]
-            }
-          })}> prev </button>
-        <button className='bg-gray-800 w-12 h-12 text-white'
-          onClick={() => router.push({
-            pathname:'/[User]/[pid]/[post]',
-            query: {
-              User:User,
-              pid:[nextPid],
-              post:[nextPostId]
-            }
-          })}> next </button>
-      </div>
     </div>
 )}
 

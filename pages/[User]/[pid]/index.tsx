@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import type {GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Card from '../../../components/card'
 import Loading from '../../../components/load'
-import Link from 'next/link'
+import Navigation from '../../../components/Navigation'
 
 type Data = {
   data: itemType[]
@@ -29,33 +29,11 @@ const AlbumCards = ({data}: Data) => {
 
 const User: NextPage<Data> = ({ data })=> {
   const router = useRouter()
-  const { User, pid } = router.query
-  const pageNext = (Number(pid) + 1).toString()
-  const pagePrev = (Number(pid) - 1).toString()
   if(router.isFallback) return <Loading /> 
   return (
-  <>
+    <>
+      <Navigation />
       <AlbumCards data={data}/>
-      <div className='flex justify-center items-center bg-slate-800'>
-        <div className='flex-row space-x-4 p-4'>
-          <Link
-            href={{
-              pathname: '/[User]/[pid]',
-              query: {
-                pid:pagePrev,
-                User: User
-            }
-          }}>Prev</Link>
-
-          <Link href={{
-            pathname:'/[User]/[pid]',
-            query:{
-              pid:pageNext,
-              User:User
-            }
-          }}>next</Link>
-        </div>
-      </div>
     </>
   )
 }
