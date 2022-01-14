@@ -20,15 +20,6 @@ type itemType = {
 
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
-const Post = ({data}: postType) => {
-  const imageList = data.map((item:itemType, i: number) => { return (
-      <div className='w-[42rem] h-auto p-4'>
-        <Image layout='responsive' width={item.width} height={item.height} key={'fhsaodf' + i} src={item.link} alt='placeholder' />
-      </div>
-    )})
-  return <div className='flex flex-col items-center justify-center p-4 h-auto'>{imageList}</div> 
-  
- }
 
 const UserPost:NextPage<postType> = ({ data }) => { 
   const router = useRouter()
@@ -36,7 +27,7 @@ const UserPost:NextPage<postType> = ({ data }) => {
 
   const { data: firstArr } = useSWR(`/api/${User}/albumIds?page=${pid}`, fetcher)
   const { data: secondArr } = useSWR(`/api/${User}/albumIds?page=${Number(pid) + 1}`, fetcher)
-  if(!firstArr && !secondArr && router.isFallback) return <Loading /> 
+  if(!firstArr || !secondArr || router.isFallback) return <Loading /> 
   const postPos = firstArr.response.indexOf(post) + 1;
 
   const nextPost = postPos === 60 ? 0 : postPos
@@ -70,6 +61,17 @@ const UserPost:NextPage<postType> = ({ data }) => {
       </div>
     </div>
 )}
+
+
+const Post = ({data}: postType) => {
+  const imageList = data.map((item:itemType, i: number) => { return (
+      <div className='w-[42rem] h-auto p-4'>
+        <Image layout='responsive' width={item.width} height={item.height} key={'fhsaodf' + i} src={item.link} alt='placeholder' />
+      </div>
+    )})
+  return <div className='flex flex-col items-center justify-center p-4 h-auto'>{imageList}</div> 
+  
+ }
 
 export const getStaticProps: GetStaticProps = async (context) => {
   try {
