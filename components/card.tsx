@@ -11,7 +11,7 @@ interface cardProps{
   coverHeight: number;
 }
 
-const card = (props: cardProps) =>{ 
+const card = (props: cardProps) =>{
  const router = useRouter()
  const {User, pid} = router.query
   return(
