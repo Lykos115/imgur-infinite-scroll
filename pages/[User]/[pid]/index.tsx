@@ -24,7 +24,7 @@ const AlbumCards = ({data}: Data) => {
       <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
     )
   })
-  return (<div className='flex flex-wrap p-4 justify-center items-center bg-slate-800'>{albums}</div>)
+  return (<div className='flex flex-wrap p-4 mt-20 justify-center items-center bg-slate-800'>{albums}</div>)
 }
 
 const User: NextPage<Data> = ({ data })=> {
