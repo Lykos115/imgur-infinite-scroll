@@ -10,7 +10,7 @@ type imageType = {
 const Image = ({height, url, width}: imageType) => (
   <div>
     <LazyLoad height={300} offset={200} once>
-      <img src={url} className='w-full h-full rounded-xl' />
+      <img src={url} className='w-full h-full rounded-xl' width={width} height={height}/>
     </LazyLoad>
   </div>
 )
