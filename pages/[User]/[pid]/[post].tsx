@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type {GetStaticProps, NextPage, GetStaticPaths} from 'next'
-import Image from 'next/image'
+import Image from '../../../components/Image'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Loading from '../../../components/load'
@@ -45,8 +45,8 @@ const UserPost:NextPage<postType> = ({ data }) => {
 
 const Post = ({data}: postType) => {
   const imageList = data.map((item:itemType, i: number) => { return (
-      <div className='w-[42rem] h-auto p-4'>
-        <Image layout='responsive' width={item.width} height={item.height} key={'fhsaodf' + i} src={item.link} alt='placeholder' />
+      <div className='w-[42rem] h-auto p-4' key={'dhfouifasdf' + i}>
+        <Image  width={item.width} height={item.height} url={item.link} />
       </div>
     )})
   return <div className='flex flex-col items-center justify-center p-4 h-auto'>{imageList}</div> 
