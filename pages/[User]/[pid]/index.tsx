@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import type {GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Card from '../../../components/card'
 import Loading from '../../../components/load'
-import Link from 'next/link'
+import Navigation from '../../../components/Navigation'
 
 type Data = {
   data: itemType[]
@@ -18,46 +18,25 @@ type itemType = {
   coverHeight: number
 }
 
-const AlbumCards = ({data}: Data) => {
-    const albums = data.map((item:itemType) => {
-    return (
-      <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title}/>
-    )
-  })
-  return (<div className='flex flex-wrap p-4 justify-center items-center bg-slate-800'>{albums}</div>)
-}
-
 const User: NextPage<Data> = ({ data })=> {
   const router = useRouter()
-  const { User, pid } = router.query
-  const pageNext = (Number(pid) + 1).toString()
-  const pagePrev = (Number(pid) - 1).toString()
   if(router.isFallback) return <Loading /> 
   return (
-  <>
+    <>
+      <Navigation />
       <AlbumCards data={data}/>
-      <div className='flex justify-center items-center bg-slate-800'>
-        <div className='flex-row space-x-4 p-4'>
-          <Link
-            href={{
-              pathname: '/[User]/[pid]',
-              query: {
-                pid:pagePrev,
-                User: User
-            }
-          }}>Prev</Link>
-
-          <Link href={{
-            pathname:'/[User]/[pid]',
-            query:{
-              pid:pageNext,
-              User:User
-            }
-          }}>next</Link>
-        </div>
-      </div>
     </>
   )
+}
+
+const AlbumCards = ({data}: Data) => {
+    const albums = data.map((item:itemType) => {
+    if(item === null) return null
+    return (
+      <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title} />
+    )
+  })
+  return (<div className='flex flex-wrap p-4 mt-20 justify-center items-center bg-slate-800'>{albums}</div>)
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
@@ -85,16 +64,21 @@ export const getStaticProps: GetStaticProps = async (context) => {
         notFound:true
       }
     }
+
     const data = res.data.data.map((item:any) => {
-      return {
-        id: item.id,
-        title: item.title,
-        coverId: item.cover,
-        coverLink: item.images[0].link,
-        coverHeight: item.images[0].height,
-        coverWidth: item.images[0].width
-      }  
+      if(item.layout){
+        return {
+          id: item.id,
+          title: item.title,
+          coverId: item.cover,
+          coverLink: item.images[0].link,
+          coverHeight: item.images[0].height,
+          coverWidth: item.images[0].width
+        }
+      }
+      return null 
     })
+    
 
     return {
       props: {
