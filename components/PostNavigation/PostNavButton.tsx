@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 
 
 const PostNavButton = (props: any) => {
-  console.log(props)
 
   const router = useRouter()
   const { User, pid } = router.query 
@@ -24,9 +23,6 @@ const PostNavButton = (props: any) => {
   const postIdDirection = props.direction ? nextPostId : prevPostId
 
   const disabledButton = props.direction ?  (props.nextArr) : ((!props.prevArr && props.currPosition !== 0 || Number(pid) !== 1) )
-//(props.prevArr &&  Number(pid) >= 1)
-
-  console.log((!props.prevArr && props.currPosition > 0))
 
   return ( disabledButton ? 
     <Link

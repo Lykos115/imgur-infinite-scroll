@@ -7,8 +7,6 @@ const PostNavigation = (prop: any) => {
   const router = useRouter()
   const { User } = router.query
 
-  console.log(prop)
-
   return (
   <div className='fixed top-0 left-0 right-0 z-10 bg-stone-900 text-white'>
     
