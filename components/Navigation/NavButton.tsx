@@ -15,11 +15,11 @@ const NavButton = ({direction}:NavButtonType) => {
   const router = useRouter()
   const { User, pid } = router.query 
   const linkPath = router.pathname
-  const { data } = useSWR(direction ? `/api/${User}/albumIds?page=${Number(pid) + 1}` : `/api/${User}/albumIds?page=${Number(pid) - 1}`, fetcher)
+  //const { data } = useSWR(direction ? `/api/${User}/albumIds?page=${Number(pid) + 1}` : `/api/${User}/albumIds?page=${Number(pid) - 1}`, fetcher)
 
-  const pageNext = direction ? (Number(pid) + 1).toString() : (Number(pid) - 1).toString()
+  const pageNext = direction ? Number(pid) + 1 : Number(pid) - 1
 //  console.log(data)
-  return ( (data && data.response.length) ? 
+  return ( pageNext > 0 ? 
     <Link
       href={{
         pathname: linkPath,
@@ -29,7 +29,7 @@ const NavButton = ({direction}:NavButtonType) => {
         }
       }}> Prev </Link>
       :
-      <div>Next</div>)
+      <div>Disabled</div>)
 }
 
 export default NavButton

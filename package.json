@@ -15,11 +15,13 @@
     "next-auth": "^4.0.6",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-lazyload": "^3.2.0",
     "swr": "^1.1.2"
   },
   "devDependencies": {
     "@types/node": "17.0.1",
     "@types/react": "17.0.37",
+    "@types/react-lazyload": "^3.1.1",
     "autoprefixer": "^10.4.0",
     "eslint": "8.5.0",
     "eslint-config-next": "12.0.7",
