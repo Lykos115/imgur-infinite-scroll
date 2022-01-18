@@ -1,9 +1,10 @@
+
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import NavButton from './Navigation/NavButton'
 
 
-const Navigation = () => {
+const PostNavigation = () => {
   const router = useRouter()
   const { User } = router.query
 
@@ -23,5 +24,5 @@ const Navigation = () => {
   </div>
 )
 }
-export default Navigation
+export default PostNavigation
 
