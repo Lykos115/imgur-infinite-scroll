@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Loading from '../../../components/load'
 import Link from 'next/link'
+import PostNavigation from '../../../components/PostNavigation'
 
 
 type postType = {
@@ -25,21 +26,24 @@ const UserPost:NextPage<postType> = ({ data }) => {
   const router = useRouter()
   const { User, pid, post } = router.query
 
-  const { data: firstArr } = useSWR(`/api/${User}/albumIds?page=${pid}`, fetcher)
-  const { data: secondArr } = useSWR(`/api/${User}/albumIds?page=${Number(pid) + 1}`, fetcher)
-  if(!firstArr || !secondArr || router.isFallback) return <Loading /> 
-  const postPos = firstArr.response.indexOf(post) + 1;
 
-  const nextPost = postPos === 60 ? 0 : postPos
-  const nextPid = postPos === 60 ? Number(pid) + 1 : Number(pid)
-  const prevPid = Number(pid) - 1 
-  const nextPostId = postPos === 60 ? secondArr.response[nextPost] : firstArr.response[nextPost]
-  
-  const postId: string = post as string
+
+  const { data: currArr } = useSWR(`/api/${User}/albumIds?page=${pid}`, fetcher)
+  const { data: nextArr } = useSWR(`/api/${User}/albumIds?page=${Number(pid) + 1}`, fetcher)
+  const { data: prevArr } = useSWR(Number(pid) - 1 ? `/api/${User}/albumIds?page=${Number(pid) - 1}` : null, fetcher)
+  if(!currArr || !nextArr || (!prevArr && prevArr === null) || router.isFallback) return <Loading /> 
+  const postPos = currArr.response.indexOf(post)
+  const prevPost = postPos - 1 >= 0 ? postPos - 1 : 59
+  const nextPost = postPos + 1 > 59 ? 0 : postPos + 1
+
+
   return (
-    <div className='bg-slate-800 pt-12'>
-      <Post data={data} />
-    </div>
+    <>
+      <PostNavigation currPosition={postPos} prevPosition={prevPost} prevArr={prevArr?.response} nextPostion={nextPost} currArr={currArr.response} nextArr={nextArr.response}/>
+      <div className='bg-slate-800 pt-20'>
+        <Post data={data} />
+      </div>
+    </>
 )}
 
 
