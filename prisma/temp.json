@@ -1,6 +1,0 @@
-datasource db {
-  provider = "mysql"
-  url = "mysql://aecwjddh7gb1:************@2olxzxywssh4.us-east-4.psdb.cloud/headpats-db?sslaccept=strict"
-}
-password: main-2022-jan-19-98h6bn
-
