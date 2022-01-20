@@ -4,6 +4,7 @@ import type {GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Card from '../../../components/card'
 import Loading from '../../../components/load'
 import Navigation from '../../../components/Navigation'
+import { useSession } from 'next-auth/react'
 
 type Data = {
   data: itemType[]
@@ -19,6 +20,8 @@ type itemType = {
 }
 
 const User: NextPage<Data> = ({ data })=> {
+  const {data: session } = useSession();
+  console.log(session)
   const router = useRouter()
   if(router.isFallback) return <Loading /> 
   return (

@@ -23,7 +23,9 @@ export default NextAuth({
   ],
   secret: process.env.SECRET,
   session: {
-    strategy:'jwt'
+    strategy:'database',
+    maxAge: 30 * 24 * 60 * 60,
+    updateAge: 24 * 60 * 60
   },
   jwt:{
     secret:process.env.SECRET
@@ -38,7 +40,7 @@ export default NextAuth({
     },
     async session({ session, token, user }) {
       // Send properties to the client, like an access_token from a provider.
-      session.accessToken = token.accessToken
+//      session.accessToken = token.accessToken
       return session
     }
   }
