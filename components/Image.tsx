@@ -18,7 +18,7 @@ const Image = ({height, url, width}: imageType) => {
   }
 
   return (
-    <div className={`${pulsing ? 'animate-pulse h-24' : ''} h-auto bg-gray-600 rounded-xl`}>
+    <div className={`${pulsing ? 'animate-pulse h-24 h-auto bg-gray-600 rounded-xl' : ''}`}>
       <motion.img 
         initial={{height: "24rem", opacity: 0}}
         animate={{
@@ -33,7 +33,7 @@ const Image = ({height, url, width}: imageType) => {
           width={width}
           height={height}
           src={url}
-          className='rounded-xl'/>
+          className='rounded-xl w-full h-full'/>
     
     </div>
   )
