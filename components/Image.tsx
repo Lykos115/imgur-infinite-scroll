@@ -18,11 +18,11 @@ const Image = ({height, url, width}: imageType) => {
   }
 
   return (
-    <div className={`${pulsing ? 'animate-pulse' : ''} h-auto w-60 bg-gray-600 rounded-xl`}>
+    <div className={`${pulsing ? 'animate-pulse h-24' : ''} h-auto w-60 bg-gray-600 rounded-xl`}>
       <motion.img 
         initial={{height: "24rem", opacity: 0}}
         animate={{
-          height: imageLoading ? "20rem" : "auto",
+          height: imageLoading ? "24rem" : "auto",
           opacity: imageLoading ? 0 : 1
           }}
           transition={
