@@ -26,8 +26,8 @@ const Image = ({height, url, width}: imageType) => {
           opacity: imageLoading ? 0 : 1
           }}
           transition={
-            ({ height: { delay: 0, duration: 0.4 } },
-            { opacity: { delay: 0.5, duration: 0.4 } })
+            { height: { delay: 0, duration: 0.4 },
+             opacity: { delay: 0.5, duration: 0.4 } }
           }
           onLoad={imageLoad}
           width={width}
