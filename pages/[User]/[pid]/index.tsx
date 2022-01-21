@@ -52,7 +52,7 @@ const AlbumCards = ({data}: Data) => {
   })
   return (
     <div className='flex justify-center items-center content-center w-full bg-slate-800'>
-      <motion.div variants={container} initial="hidden" animate="visible" className='grid grid-cols-5 max-w-screen-2xl p-4 mt-20 justify-center items-center content-center bg-slate-800'>{albums}</motion.div>
+      <motion.div variants={container} initial="hidden" animate="visible" className='flex flex-wrap xl:grid xl:grid-cols-5 xl:max-w-screen-2xl p-4 mt-20 justify-center items-center content-center bg-slate-800'>{albums}</motion.div>
     </div>
   )
 }
