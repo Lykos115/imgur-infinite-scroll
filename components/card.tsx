@@ -1,8 +1,7 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
 import Image from "./Image"
-import { m } from "framer-motion"
-
+import { motion } from "framer-motion"
 
 interface cardProps{
   title: string;
@@ -25,14 +24,14 @@ const card = (props: cardProps) =>{
  const router = useRouter()
  const {User, pid} = router.query
   return(
-    <m.div className='m-4 w-60 h-auto'  variants={item}>
+    <motion.div className='m-4 w-60 h-auto'  variants={item}>
       <Link href={`/${User}/${pid}/${props.id}`}>
         <div className='relative'>
           <Image width={props.coverWidth} height={props.coverHeight} url={props.coverImage} />
           <div className='rounded-b-xl w-full absolute inset-x-0 bottom-0 p-4 bg-slate-900 opacity-50 text-white'>{props.title}</div> 
         </div>
       </Link>
-    </m.div>
+    </motion.div>
   )
 }
 export default card

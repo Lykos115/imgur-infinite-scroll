@@ -4,7 +4,7 @@ import type {GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Card from '../../../components/card'
 import Loading from '../../../components/load'
 import Navigation from '../../../components/Navigation'
-import { LazyMotion, domAnimation, m } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 type Data = {
   data: itemType[]
@@ -51,9 +51,7 @@ const AlbumCards = ({data}: Data) => {
     )
   })
   return (
-    <LazyMotion features={domAnimation}>
-      <m.div variants={container} initial="hidden" animate="visible" className='flex flex-wrap p-4 mt-20 justify-center items-center bg-slate-800'>{albums}</m.div>
-    </LazyMotion>
+      <motion.div variants={container} initial="hidden" animate="visible" className='flex flex-wrap p-4 mt-20 justify-center items-center bg-slate-800'>{albums}</motion.div>
   )
 }
 
