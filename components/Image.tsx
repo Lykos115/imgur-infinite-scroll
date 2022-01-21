@@ -8,11 +8,12 @@ type imageType = {
 
 
 const Image = ({height, url, width}: imageType) => (
-  <div>
-    <LazyLoad height={300} offset={200} once>
-      <img src={url} className='w-full h-full rounded-xl' width={width} height={height}/>
-    </LazyLoad>
-  </div>
+  <img src={url} className='w-full h-full rounded-xl' width={width} height={height}/>
 )
 
 export default Image
+
+
+
+//<LazyLoad height={300} offset={200} once>
+//</LazyLoad>
