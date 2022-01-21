@@ -9,7 +9,7 @@ type imageType = {
 
 
 const Image = ({height, url, width,icon}: imageType) => (
-  <img src={url} loading='eager' className={`${icon ? 'w-24 h-24' : 'w-full h-full'} rounded-xl`} width={width} height={height}/>
+  <img src={url} className={`${icon ? 'w-24 h-24' : 'w-full h-full'} rounded-xl`} width={width} height={height}/>
 )
 
 export default Image
