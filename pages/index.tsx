@@ -1,18 +1,20 @@
 import type { NextPage } from 'next'
-import Image from '../components/Image'
 import SearchUser from '../components/SearchUser'
+import { AnimatePresence } from 'framer-motion'
 
 const Home: NextPage = () => {
   return (
+    <AnimatePresence exitBeforeEnter initial={false}>
     <div className='bg-slate-800 h-screen w-screen flex flex-col items-center justify-center text-white'>
 
       {/*<Link href='/MetaPathos/1'>
         Meta
       </Link>*/}
-      <Image url='/headpats.gif' width={400} height={400} />
+      <img src='/headpats.gif' className='w-24 h-24 rounded-xl' width={400} height={400}/>
       <div className='font-black text-6xl'>Headpats</div>
       <SearchUser />
     </div>
+    </AnimatePresence>
   )
 }
 
