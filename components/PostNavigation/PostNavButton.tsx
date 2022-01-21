@@ -24,8 +24,9 @@ const PostNavButton = (props: any) => {
 
   const disabledButton = props.direction ?  (props.nextArr) : ((!props.prevArr && props.currPosition !== 0 || Number(pid) !== 1) )
 
-  return ( disabledButton ? 
-    <Link
+  if(props.direction){
+
+    return <Link
       href={{
         pathname: linkPath,
         query: {
@@ -33,9 +34,23 @@ const PostNavButton = (props: any) => {
           User: User,
           post: postIdDirection
         }
-      }}> Prev </Link>
+      }}> Next </Link>
+  }else{
+    return ( disabledButton ? 
+      <Link
+        href={{
+          pathname: linkPath,
+          query: {
+            pid: pidDirection,
+            User: User,
+            post: postIdDirection
+          }
+        }}> Prev </Link>
       :
-      <div>Disabled</div>)
+      <div className='invisible'> Prev </div>
+    )
+  }
+
 }
 
 export default PostNavButton
