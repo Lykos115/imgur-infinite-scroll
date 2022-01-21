@@ -9,7 +9,7 @@ const Home: NextPage = () => {
       {/*<Link href='/MetaPathos/1'>
         Meta
       </Link>*/}
-      <Image url='/headpats.gif' width={400} height={400} />
+      <Image url='/headpats.gif' width={400} height={400} icon={true}/>
       <div className='font-black text-6xl'>Headpats</div>
       <SearchUser />
     </div>

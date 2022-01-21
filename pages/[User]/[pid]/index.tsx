@@ -4,7 +4,7 @@ import type {GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Card from '../../../components/card'
 import Loading from '../../../components/load'
 import Navigation from '../../../components/Navigation'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 
 type Data = {
   data: itemType[]
@@ -26,7 +26,7 @@ const container = {
     opacity: 1,
     scale: 1,
     transition: {
-      delayChildren: 0.3,
+      delayChildren: 0.4,
       staggerChildren: 0.2
     }
   }
@@ -50,7 +50,11 @@ const AlbumCards = ({data}: Data) => {
       <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title} />
     )
   })
-  return (<motion.div variants={container} initial="hidden" animate="visible" className='flex flex-wrap p-4 mt-20 justify-center items-center bg-slate-800'>{albums}</motion.div>)
+  return (
+    <LazyMotion features={domAnimation}>
+      <m.div variants={container} initial="hidden" animate="visible" className='flex flex-wrap p-4 mt-20 justify-center items-center bg-slate-800'>{albums}</m.div>
+    </LazyMotion>
+  )
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
