@@ -5,7 +5,7 @@ import Card from '../../../components/card'
 import Loading from '../../../components/load'
 import Navigation from '../../../components/Navigation'
 import { motion } from 'framer-motion'
-import Error from 'next/error'
+import Error from '../../_error'
 
 type Data = {
   data: itemType[]
@@ -39,7 +39,7 @@ const User: NextPage<Data> = ({ data })=> {
   if(router.isFallback) return <Loading /> 
 
   if(!data || data.length === 0){
-    return <Error statusCode={404} />
+    return <Error />
   }
   return (
     <>
