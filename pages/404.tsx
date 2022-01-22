@@ -1,5 +1,3 @@
-
-
 export default function Custom404() {
   return (
     <div className='bg-slate-900 h-screen w-screen flex flex-col justify-center items-center text-center'>

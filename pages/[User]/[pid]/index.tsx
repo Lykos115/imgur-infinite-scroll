@@ -5,6 +5,7 @@ import Card from '../../../components/card'
 import Loading from '../../../components/load'
 import Navigation from '../../../components/Navigation'
 import { motion } from 'framer-motion'
+import Error from '../../_error'
 
 type Data = {
   data: itemType[]
@@ -34,7 +35,12 @@ const container = {
 
 const User: NextPage<Data> = ({ data })=> {
   const router = useRouter()
+
   if(router.isFallback) return <Loading /> 
+
+  if(!data || data.length === 0){
+    return <Error />
+  }
   return (
     <>
       <Navigation />
@@ -82,6 +88,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
         notFound:true
       }
     }
+    
+    const isNull = (value:any) => {
+      return value !== null
+    }
 
     const data = res.data.data.map((item:any) => {
       if(item.layout){
@@ -94,8 +104,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
           coverWidth: item.images[0].width
         }
       }
-      return null 
-    })
+      return null
+    }).filter(isNull)
     
 
     return {
