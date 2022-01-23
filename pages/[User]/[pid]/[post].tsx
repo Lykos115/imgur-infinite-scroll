@@ -49,7 +49,7 @@ const UserPost:NextPage<postType> = ({ data }) => {
 
 const Post = ({data}: postType) => {
   const imageList = data.map((item:itemType, i: number) => { return (
-      <div className='w-[42rem] h-auto p-4' key={'dhfouifasdf' + i}>
+      <div className='md:w-[42rem] w-auto h-auto p-4' key={'dhfouifasdf' + i}>
         <Image  width={item.width} height={item.height} url={item.link} />
       </div>
     )})
