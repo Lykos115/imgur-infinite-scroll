@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
 const HomeIcon = () =>(
-  <div className='fixed top-2 left-4'>
+  <div className='md:fixed md:top-2 md:left-4 justify-self-center'>
     <Link href='/'>
-      <img src='/headpats.gif' className='w-16 h-16 rounded-xl' width={400} height={400}/>
+      <img src='/headpats.gif' className='w-16 h-16 rounded-xl justify-self-center' width={400} height={400}/>
     </Link>
   </div>    
 )
