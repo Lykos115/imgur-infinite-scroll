@@ -41,10 +41,6 @@ const User:NextPage<Data> = ({ fallback })=> {
 
   if(router.isFallback) return <Loading /> 
 
-  //if(!data || data.length === 0){
-  //  return <Error />
-  //}
-  //
   return (
 
     <SWRConfig value={{fallback}}>
