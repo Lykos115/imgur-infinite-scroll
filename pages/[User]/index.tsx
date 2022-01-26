@@ -5,6 +5,7 @@ import Loading from "../../components/smallLoad"
 import Card from '../../components/card'
 import axios from 'axios'
 import InfiniteNavigation from "../../components/InfiniteNavigation"
+import Error from "../_error"
 
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
@@ -17,6 +18,7 @@ const Page = ({pid}: PageNum) => {
   const { User } = router.query
   const apiURL = `/api/${User}/albumData?page=${Number(pid)}` 
   const { data } = useSWR(apiURL, fetcher)
+  
   if(!data) return <Loading />
 
   const albums = data?.response?.map((item:any) => {
@@ -32,6 +34,13 @@ const Page = ({pid}: PageNum) => {
 }
 
 const UserInfinite = () => {
+
+  const router = useRouter()
+  const { User } = router.query
+  const apiURL = `/api/${User}/albumData?page=0` 
+  const { data, error } = useSWR(apiURL, fetcher)
+  if(error) return <Error /> 
+  
   const [cnt, setCnt] = useState(1)
 
   const page = []
@@ -39,6 +48,8 @@ const UserInfinite = () => {
   for(let i = 0; i < cnt; i++){
     page.push(<Page pid={i} key={i+'infinite'} />)
   }
+
+  console.log(page)
 
 
   return (
