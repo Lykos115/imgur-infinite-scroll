@@ -29,7 +29,7 @@ const ImageWall = (props:any) => {
   if(!images) return <SmallLoading /> 
   const wall = images?.response.map((item:any) => {
     return(
-      <LazyLoad classNamePrefix='block' offset={200} once>
+      <LazyLoad classNamePrefix='block w-1/12' offset={200} once>
         <img className='w-24 h-40' src={item.link} height={item.height} width={item.width}/>
       </LazyLoad>
     )
