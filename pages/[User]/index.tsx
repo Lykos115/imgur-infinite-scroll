@@ -49,9 +49,6 @@ const UserInfinite = () => {
     page.push(<Page pid={i} key={i+'infinite'} />)
   }
 
-  console.log(page)
-
-
   return (
     <>
       <InfiniteNavigation />
