@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import LazyLoad from "react-lazyload"
 import useSWR from "swr"
 
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
@@ -17,16 +18,25 @@ const Page = (props:any) => {
 
   //console.log(pageImages)
 
-  return <div className='flex flex-wrap'>{imagesForWall}</div>
+  return (
+    <div className='flex flex-wrap flex-row bg-slate-800'>
+      {imagesForWall}
+    </div>
+  )
 
 }
 
 const ImageWall = (props:any) => {
   const {data:images} = useSWR(props.url, fetcher);
   if(!images) return null
-  const wall = images?.response.map((item:any) => <img className='shrink w-24 h-auto' src={item.link} height={item.height} width={item.width}/>)
-  console.log(images)
-  return wall 
+  const wall = images?.response.map((item:any) => {
+    return(
+      <LazyLoad classNamePrefix='h-fit '> 
+        <img className='w-full' src={item.link} height={item.height} width={item.width}/>
+      </LazyLoad>
+    )
+  })
+  return <div className='basis-1/4'>{wall}</div> 
 }
 
 const UserWall = () => {
@@ -35,10 +45,15 @@ const UserWall = () => {
   const page = []
 
   for(let i = 0; i < cnt; i++){
-    page.push(<Page index={i} key={i+'wall'} />)
+    page.push(<Page index={i} key={i+'wall'} setNextPage={setCnt} count={cnt}/>)
   }
 
-  return <div>{page}</div>
+  return (
+    <div> 
+      {page}
+     {/*<button> Load More </button>*/}
+    </div>
+  )
 
 }
 
