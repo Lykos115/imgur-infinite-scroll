@@ -15,9 +15,6 @@ const Page = (props:any) => {
   if(!albums) return <SmallLoading /> 
 
   const imagesForWall = albums.response.map((item:any) => <ImageWall url={`/api/album/${item}`} />)
-  //if(!pageImages) return null
-
-  //console.log(pageImages)
 
   return imagesForWall
   
