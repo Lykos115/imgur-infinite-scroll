@@ -48,7 +48,7 @@ const UserWall = () => {
   }
 
   return (
-    <div className='bg-slate-800 flex flex-col items-center justify-center'> 
+    <div className='bg-slate-800 flex flex-col items-center justify-center w-screen'> 
       <div className='flex flex-wrap'> 
         {page}
       </div>
