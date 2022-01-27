@@ -10,6 +10,7 @@ interface cardProps{
   coverImage: string;
   coverWidth: number;
   coverHeight: number;
+  pageNumber?: number;
 }
 
   
@@ -26,7 +27,7 @@ const card = (props: cardProps) =>{
  const {User, pid} = router.query
   return(
     <motion.div className='m-4 w-60 h-auto'  variants={item}>
-      <Link href={`/${User}/${pid}/${props.id}`}>
+      <Link href={`/${User}/${!pid ? props.pageNumber : pid}/${props.id}`}>
         <div className='relative'>
           <Image width={props.coverWidth} height={props.coverHeight} url={props.coverImage} />
           <div className='rounded-b-xl w-full absolute inset-x-0 bottom-0 p-4 bg-slate-900 opacity-50 text-white'>{props.title}</div> 
