@@ -23,7 +23,7 @@ const Page = ({pid}: PageNum) => {
 
   const albums = data?.response?.map((item:any) => {
     return (
-      <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title} />
+      <Card key={item.id} pageNumber={pid + 1} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title} />
     )
   })
   return ( 
