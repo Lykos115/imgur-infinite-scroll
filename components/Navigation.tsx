@@ -13,10 +13,16 @@ const Navigation = () => {
     <nav className='w-full h-20 z-20 justify-center items-center text-center place-content-around grid grid-cols-3 md:grid-cols-5'>
       {/*<Image width={80} height={80} src='/headpats.gif' className='absolute top-0 left-0 right-0'/>*/}
       <HomeIcon />
-      <NavButton direction={false} />
-      <AlbumSearchUser />     
-      <NavButton direction={true} />
-      <Link href={'/' + User}> Infinite </Link>
+      <div className='order-1 md:order-none'>
+        <NavButton direction={false} />
+      </div>
+      <AlbumSearchUser />
+      <div className='order-3 md:order-none'>
+        <NavButton direction={true} />
+      </div>
+      <div className='hidden md:block md:order-last'>
+        <Link href={'/' + User}> Infinite </Link>
+      </div>
     </nav>
   </div>
 )

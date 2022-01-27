@@ -14,10 +14,12 @@ const InfiniteNavigation = () => {
     <nav className='w-full h-20 z-20 justify-center items-center text-center place-content-around grid grid-cols-3 md:grid-cols-5'>
       {/*<Image width={80} height={80} src='/headpats.gif' className='absolute top-0 left-0 right-0'/>*/}
       <HomeIcon />
-      <div></div>
+      <div className='order-first md:order-none'></div>
       <InfiniteUserSearch />
-      <div></div>
-      <Link href={'/' + User + '/1'}> Page Mode </Link>
+      <div className='order-last md:order-none'></div>
+      <div className='hidden md:block'>
+        <Link href={'/' + User + '/1'}> Page Mode </Link>
+      </div>
     </nav>
   </div>
 )
