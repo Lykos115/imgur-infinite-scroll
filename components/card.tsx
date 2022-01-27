@@ -2,6 +2,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import Image from "./Image"
 import { motion } from "framer-motion"
+import LazyLoad from "react-lazyload"
 
 interface cardProps{
   title: string;
@@ -35,3 +36,7 @@ const card = (props: cardProps) =>{
   )
 }
 export default card
+
+
+//<LazyLoad height={300} offset={200} once>
+//</LazyLoad>

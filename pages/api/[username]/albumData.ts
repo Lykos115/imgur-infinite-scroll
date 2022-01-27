@@ -18,8 +18,8 @@ type Data = {
 
 export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
   const { username, page } = req.query;
-  const pageNum = Number(page) - 1;
-  const url = process.env.IMGUR_BASE_URL + `/account/${username}/submissions/${pageNum}`;
+//  const pageNum = Number(page) - 1;
+  const url = process.env.IMGUR_BASE_URL + `/account/${username}/submissions/${page}`;
   const headers = {
     headers: {
       Authorization: `Client-ID ${process.env.IMGUR_KEY}`
@@ -28,16 +28,24 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
   await axios
     .get(url, headers)
     .then(({ data }) => {
-      const  response = data.data.map((item:any) =>{
+
+    const isNull = (value:any) => {
+      return value !== null
+    }
+
+    const response = data.data.map((item:any) => {
+      if(item.layout){
         return {
-          id:item.id,
-          coverId: item.cover,
+          id: item.id,
           title: item.title,
+          coverId: item.cover,
           coverLink: item.images[0].link,
-          coverWidth: item.images[0].width,
-          coverHeight: item.images[0].height
+          coverHeight: item.images[0].height,
+          coverWidth: item.images[0].width
         }
-      })
+      }
+      return null
+    }).filter(isNull)
       res.status(200).json({response} as any);
     })
     .catch(({ err }) =>{

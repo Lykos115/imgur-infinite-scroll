@@ -6,9 +6,10 @@ import Loading from '../../../components/load'
 import Navigation from '../../../components/Navigation'
 import { motion } from 'framer-motion'
 import Error from '../../_error'
+import useSWR, { SWRConfig } from 'swr'
 
 type Data = {
-  data: itemType[]
+  [data:string]: itemType[]
 }
 
 type itemType = {
@@ -33,33 +34,40 @@ const container = {
   }
 }
 
-const User: NextPage<Data> = ({ data })=> {
+const fetcher = (url:string) => axios.get(url).then(res => res.data)
+
+const User:NextPage<Data> = ({ fallback })=> {
   const router = useRouter()
 
   if(router.isFallback) return <Loading /> 
 
-  if(!data || data.length === 0){
-    return <Error />
-  }
   return (
-    <>
-      <Navigation />
-      <AlbumCards data={data}/>
-    </>
+
+    <SWRConfig value={{fallback}}>
+      <AlbumCards />
+    </SWRConfig>
   )
 }
 
-const AlbumCards = ({data}: Data) => {
-    const albums = data.map((item:itemType) => {
-    if(item === null) return null
+const AlbumCards = () => {
+  const router = useRouter()
+  const { User, pid } = router.query
+  const apiURL = `/api/${User}/albumData?page=${Number(pid) - 1}` 
+  const { data } = useSWR(apiURL, fetcher)
+  if(!data) return <Loading />
+
+  const albums = data?.response?.map((item:itemType) => {
     return (
       <Card key={item.id} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title} />
     )
   })
   return (
-    <div className='flex justify-center items-center content-center w-full bg-slate-800'>
-      <motion.div variants={container} initial="hidden" animate="visible" className='flex flex-wrap xl:grid xl:grid-cols-5 xl:max-w-screen-2xl p-4 mt-20 justify-center items-center content-center bg-slate-800'>{albums}</motion.div>
-    </div>
+    <>
+      <Navigation />
+      <div className='flex justify-center items-center content-center w-full bg-slate-800'>
+        <motion.div variants={container} initial="hidden" animate="visible" className='flex flex-wrap xl:grid xl:grid-cols-5 xl:max-w-screen-2xl p-4 mt-20 justify-center items-center content-center bg-slate-800'>{albums}</motion.div>
+      </div>
+    </>
   )
 }
 
@@ -81,6 +89,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const url = `/account/${User}/submissions/${pageNumber}`
 
     const apiURL = process.env.IMGUR_BASE_URL + url
+
+    const fallbackURL = `/api/${User}/albumData?page=${pageNumber}`
 
     const res = await axios.get(apiURL, header)
     if(!res.data.data.length){
@@ -110,7 +120,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     return {
       props: {
-        data
+        fallback: {
+          [fallbackURL]: data
+        }
       },
       revalidate: 60
     }

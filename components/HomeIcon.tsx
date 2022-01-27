@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 const HomeIcon = () =>(
-  <div className='md:fixed md:top-2 md:left-4 justify-self-center'>
+  <div className='justify-self-center'>
     <Link href='/'>
       <img src='/headpats.gif' className='w-16 h-16 rounded-xl justify-self-center' width={400} height={400}/>
     </Link>
@@ -9,3 +9,4 @@ const HomeIcon = () =>(
 )
 
 export default HomeIcon
+//md:fixed md:top-2 md:left-4
