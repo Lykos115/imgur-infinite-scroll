@@ -38,18 +38,16 @@ const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
 const User:NextPage<Data> = ()=> {
   const router = useRouter()
+  const { User, pid } = router.query
 
-  if(router.isFallback) return <Loading /> 
-
-  return <AlbumCards />
+  return <AlbumCards currentPage={pid} username={User}/>
   
 }
 
-const AlbumCards = () => {
-  const router = useRouter()
-  const { User, pid } = router.query
-  const apiURL = `/api/${User}/albumData?page=${Number(pid) - 1}` 
-  const { data } = useSWR(apiURL, fetcher)
+const AlbumCards = (props:any) => {
+  const apiURL = `/api/${props.username}/albumData?page=${Number(props.currentPage) - 1}` 
+  const { data, error } = useSWR(apiURL, fetcher)
+  if(error) return <Error />
   if(!data) return <Loading />
 
   const albums = data?.response?.map((item:itemType) => {
