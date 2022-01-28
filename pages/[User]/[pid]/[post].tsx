@@ -57,42 +57,4 @@ const Post = ({data}: postType) => {
   
  }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  try {
-    type paramType = {
-      post: string
-    }
-    const { post }:paramType = context.params as paramType
-    const header = {
-      headers:{
-        'Authorization': `Client-ID ${process.env.IMGUR_KEY}`
-      }
-    }
-    const apiURL = `/album/${post}/images`
-    const res = await axios.get(process.env.IMGUR_BASE_URL + apiURL, header)
-    const data = res.data.data.map((item:any) => {
-      return {
-        link: item.link,
-        width: item.width,
-        height: item.height
-      }
-    })
-
-    return {
-      props: { 
-        data
-      },
-      revalidate:60
-    }
-  } catch(error) {
-    return { props: { "error": "not working" } }
-  }
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-
-  return {paths:[], fallback: true}
-}
-
-
 export default UserPost

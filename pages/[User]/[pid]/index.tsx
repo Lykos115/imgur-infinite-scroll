@@ -39,13 +39,19 @@ const fetcher = (url:string) => axios.get(url).then(res => res.data)
 const User:NextPage<Data> = ()=> {
   const router = useRouter()
   const { User, pid } = router.query
-
-  return <AlbumCards currentPage={pid} username={User}/>
+  const current = Number(pid)
+  const next = Number(pid) + 1
+  return (
+      <>
+        <AlbumCards currentPage={next} username={User} />
+        <AlbumCards currentPage={current} username={User} />
+      </>
+    )
   
 }
 
 const AlbumCards = (props:any) => {
-  const apiURL = `/api/${props.username}/albumData?page=${Number(props.currentPage) - 1}` 
+  const apiURL = `/api/${props.username}/albumData?page=${props.currentPage - 1}` 
   const { data, error } = useSWR(apiURL, fetcher)
   if(error) return <Error />
   if(!data) return <Loading />
