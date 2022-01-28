@@ -39,11 +39,11 @@ const fetcher = (url:string) => axios.get(url).then(res => res.data)
 const User:NextPage<Data> = ()=> {
   const router = useRouter()
   const { User, pid } = router.query
-  const current = Number(pid)
+  const current = Number(pid) 
   const next = Number(pid) + 1
   return (
       <>
-        <AlbumCards currentPage={next} username={User} />
+        <div className='hidden'><AlbumCards currentPage={next} username={User} /></div>
         <AlbumCards currentPage={current} username={User} />
       </>
     )
