@@ -26,7 +26,7 @@ const AlbumSearchUser = () => {
   }
 
 
-  return <input className='md:mx-10 md:block hidden bg-transparent text-center focus:outline-none focus:border-b' onChange={userInput} onKeyPress={onEnter} placeholder='Username' type='text' value={query}/>
+  return <input className='md:mx-10 md:block hidden border-b bg-transparent text-center focus:outline-none focus:border-b' onChange={userInput} onKeyPress={onEnter} placeholder='Username' type='text' value={query}/>
 
 }
 
