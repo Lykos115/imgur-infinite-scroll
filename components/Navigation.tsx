@@ -20,8 +20,8 @@ const Navigation = () => {
       <div className='order-3 md:order-none'>
         <NavButton direction={true} />
       </div>
-      <div className='hidden md:block md:order-last'>
-        <Link href={'/' + User}> Infinite </Link>
+      <div className='hidden md:block md:order-last md:text-4xl'>
+        <Link href={'/' + User}> &infin; </Link>
       </div>
     </nav>
   </div>
