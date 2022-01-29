@@ -7,6 +7,7 @@ import Navigation from '../../../components/Navigation'
 import { motion } from 'framer-motion'
 import Error from '../../_error'
 import useSWR from 'swr'
+import Head from 'next/head'
 
 type Data = {
   [data:string]: itemType[]
@@ -43,6 +44,9 @@ const User:NextPage<Data> = ()=> {
   const next = Number(pid) + 1
   return (
       <>
+        <Head>
+          <title>{User}</title>
+        </Head>
         <div className='hidden'><AlbumCards currentPage={next} username={User} /></div>
         <AlbumCards currentPage={current} username={User} />
       </>

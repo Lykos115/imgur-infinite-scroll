@@ -6,6 +6,7 @@ import Card from '../../components/card'
 import axios from 'axios'
 import InfiniteNavigation from "../../components/InfiniteNavigation"
 import Error from "../_error"
+import Head from "next/head"
 
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
@@ -51,6 +52,9 @@ const UserInfinite = () => {
 
   return (
     <>
+      <Head>
+        <title>{User}</title>
+      </Head>
       <InfiniteNavigation />
       <div className='flex flex-col mt-20 bg-slate-800 justify-center items-center text-center'>
         {page}

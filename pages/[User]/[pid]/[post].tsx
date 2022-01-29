@@ -1,11 +1,11 @@
 import axios from 'axios'
-import type {GetStaticProps, NextPage, GetStaticPaths} from 'next'
+import type { NextPage } from 'next'
 import Image from '../../../components/Image'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Loading from '../../../components/load'
-import Link from 'next/link'
 import PostNavigation from '../../../components/PostNavigation'
+import Head from 'next/head'
 
 
 type postType = {
@@ -40,6 +40,9 @@ const UserPost:NextPage<postType> = () => {
 
   return (
     <>
+      <Head>
+        <title>{User}</title>
+      </Head>
       <PostNavigation currPosition={postPos} prevPosition={prevPost} prevArr={prevArr?.response} nextPostion={nextPost} currArr={currArr.response} nextArr={nextArr.response}/>
       <div className='bg-slate-800 pt-20'>
         <Post data={data.response} />

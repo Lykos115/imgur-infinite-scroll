@@ -1,4 +1,5 @@
 import axios from "axios"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import LazyLoad from "react-lazyload"
@@ -8,9 +9,7 @@ import SmallLoading from "../../components/smallLoad"
 const fetcher = (url:string) => axios.get(url).then(res => res.data)
 
 const Page = (props:any) => {
-  const router = useRouter()
-  const { username } = router.query
-  const {data: albums} = useSWR(`/api/${username}/albumIds?page=${props.index + 1}`, fetcher)
+  const {data: albums} = useSWR(`/api/${props.username}/albumIds?page=${props.index + 1}`, fetcher)
 
   if(!albums) return <SmallLoading /> 
 
@@ -35,17 +34,21 @@ const ImageWall = (props:any) => {
 }
 
 const UserWall = () => {
-
+  const router = useRouter()
+  const { username } = router.query
   const [cnt, setCnt] = useState(1);
 
   const page = []
 
   for(let i = 0; i < cnt; i++){
-    page.push(<Page index={i} key={i+'wall'} setNextPage={setCnt} count={cnt}/>)
+    page.push(<Page index={i} key={i+'wall'} username={username} setNextPage={setCnt} count={cnt}/>)
   }
 
   return (
     <div className='bg-slate-800 flex flex-col items-center justify-center w-screen'> 
+      <Head>
+        <title>{username}{"'"}s Wall</title>
+      </Head>
       <div className='flex flex-wrap'> 
         {page}
       </div>
