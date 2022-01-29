@@ -33,7 +33,8 @@ const Image = ({height, url, width}: imageType) => {
           width={width}
           height={height}
           src={url}
-          className='rounded-xl w-full h-full'/>
+          className='rounded-xl w-full h-full'
+          alt='card image'/>
     
     </div>
   )
