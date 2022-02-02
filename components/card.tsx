@@ -26,7 +26,7 @@ const card = (props: cardProps) =>{
  const router = useRouter()
  const {User, pid} = router.query
   return(
-    <motion.div className='m-4 w-60 h-auto'  variants={item}>
+    <motion.div className='m-4 w-60 h-auto hover:cursor-pointer'  variants={item}>
       <Link href={`/${User}/${!pid ? props.pageNumber : pid}/${props.id}`}>
         <div className='relative'>
           <Image width={props.coverWidth} height={props.coverHeight} url={props.coverImage} />
