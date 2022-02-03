@@ -43,7 +43,7 @@ const Infinite = () => {
   return (
     <>
       <Head>
-        <title>${User}</title>
+        <title>{User}</title>
       </Head>
       <InfiniteNavigation />
       <InfiniteScroll
