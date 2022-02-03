@@ -6,6 +6,7 @@ import useSWR from 'swr'
 import Loading from '../../../components/load'
 import PostNavigation from '../../../components/PostNavigation'
 import Head from 'next/head'
+import GoBack from '../../../components/GoBack'
 
 
 type postType = {
@@ -46,6 +47,7 @@ const UserPost:NextPage<postType> = () => {
       <PostNavigation currPosition={postPos} prevPosition={prevPost} prevArr={prevArr?.response} nextPostion={nextPost} currArr={currArr.response} nextArr={nextArr.response}/>
       <div className='bg-slate-800 pt-20'>
         <Post data={data.response} />
+        <GoBack />
       </div>
     </>
 )}
