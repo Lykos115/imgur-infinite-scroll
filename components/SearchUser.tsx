@@ -15,10 +15,9 @@ const SearchUser = () => {
   const onEnter = (event: any) => {
       if(event.key === 'Enter'){
         router.push({
-          pathname: '/[User]/[pid]',
+          pathname: '/[User]',
           query: {
-            User: query,
-            pid: '1'
+            User: query
           }
         })
       }
@@ -26,10 +25,9 @@ const SearchUser = () => {
 
   const searchClick = () => {
     router.push({
-      pathname: '/[User]/[pid]',
+      pathname: '/[User]',
       query: {
-        User: query,
-        pid: '1'
+        User: query
       }
     })
   }
