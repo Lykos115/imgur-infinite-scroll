@@ -52,7 +52,7 @@ const Infinite = () => {
         loader={<Loader />}
         dataLength={albumsFlat?.length}
       >
-        <div className='flex justify-center items-center text-center content-center'>
+        <div className='flex justify-center items-center text-center content-center bg-slate-800'>
           <div className='flex flex-wrap xl:grid xl:grid-cols-5 xl:max-w-screen-2xl p-4 justify-center items-center content-center bg-slate-800 mt-20'>{albums}</div>
         </div>
       </InfiniteScroll>
