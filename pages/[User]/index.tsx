@@ -1,70 +1,62 @@
-import { useRouter } from "next/router"
-import { useState } from "react"
-import useSWR from "swr"
-import Loading from "../../components/smallLoad"
-import Card from '../../components/card'
+import { useRouter } from 'next/router'
+import useSWRInfinite from 'swr/infinite'
 import axios from 'axios'
-import InfiniteNavigation from "../../components/InfiniteNavigation"
-import Error from "../_error"
-import Head from "next/head"
+import InfiniteScroll from 'react-infinite-scroll-component'
+import Loader from '../../components/smallLoad'
+import Card from '../../components/card'
+import InfiniteNavigation from '../../components/InfiniteNavigation'
+import Error from '../_error'
+import PageLoader from '../../components/load'
+import Head from 'next/head'
 
-const fetcher = (url:string) => axios.get(url).then(res => res.data)
+const fetcher = (url:string) => axios.get(url).then((res:any) => res.data.response)
 
-type PageNum = {
-  pid:number
-}
-
-const Page = ({pid}: PageNum) => {
+const Infinite = () => {
   const router = useRouter()
-  const { User } = router.query
-  const apiURL = `/api/${User}/albumData?page=${Number(pid)}` 
-  const { data } = useSWR(apiURL, fetcher)
+  const {User} = router.query
   
-  if(!data) return <Loading />
+  const getKey = ( index: number , pagePrev: any) =>{
+    if(pagePrev && !pagePrev.length) return null
+    return `/api/${User}/albumData?page=${index}`
+  }
 
-  const albums = data?.response?.map((item:any) => {
+   
+  const {data: paginatedData, size, setSize, error} = useSWRInfinite(getKey, fetcher)
+
+  if(error) return <Error />
+
+
+  if(!paginatedData) return <PageLoader />
+  const albumsFlat = paginatedData?.flat()
+
+  const isEnd = paginatedData && paginatedData[paginatedData.length - 1]?.length < 50 
+  
+  //const loadingAlbums = paginatedData && typeof paginatedData[size - 1] === "undefined"
+
+
+  const albums = albumsFlat.map((item:any) => {
     return (
-      <Card key={item.id} pageNumber={pid + 1} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title} />
+      <Card key={item.id} pageNumber={size} id={item.id} coverImage={item.coverLink} coverWidth={item.coverWidth} coverHeight={item.coverHeight} title={item.title} />
     )
   })
-  return ( 
-    <div className='flex justify-center items-center content-center w-full bg-slate-800'> 
-      <div className='flex flex-wrap xl:grid xl:grid-cols-5 xl:max-w-screen-2xl p-4 justify-center items-center content-center bg-slate-800'> {albums} </div>
-    </div>
-  )
-}
-
-const UserInfinite = () => {
-
-  const router = useRouter()
-  const { User } = router.query
-  const apiURL = `/api/${User}/albumData?page=0` 
-  const { data, error } = useSWR(apiURL, fetcher)
-  if(error) return <Error /> 
-  
-  const [cnt, setCnt] = useState(1)
-
-  const page = []
-
-  for(let i = 0; i < cnt; i++){
-    page.push(<Page pid={i} key={i+'infinite'} />)
-  }
 
   return (
     <>
       <Head>
-        <title>{User}</title>
+        <title>${User}</title>
       </Head>
       <InfiniteNavigation />
-      <div className='flex flex-col mt-20 bg-slate-800 justify-center items-center text-center'>
-        {page}
-        <button className='text-white mt-4 mb-12 bg-stone-900 w-32 rounded-3xl p-4' onClick={() => setCnt(cnt + 1)}> Load More </button>
-      </div>
+      <InfiniteScroll
+        next={() => setSize(size + 1)}
+        hasMore={!isEnd}
+        loader={<Loader />}
+        dataLength={albumsFlat?.length}
+      >
+          <div className='flex flex-wrap xl:grid xl:grid-cols-5 xl:max-w-screen-2xl p-4 justify-center items-center content-center bg-slate-800 mt-20'>{albums}</div>
+      </InfiniteScroll>
     </>
   )
-
 }
 
 
-
-export default UserInfinite
+export default Infinite
