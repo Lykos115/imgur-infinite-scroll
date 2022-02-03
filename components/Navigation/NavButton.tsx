@@ -14,29 +14,16 @@ const NavButton = ({direction}:NavButtonType) => {
   const linkPath = router.pathname
 
   const pageNext = direction ? Number(pid) + 1 : Number(pid) - 1
-  if(direction){
-    return <Link
-      href={{
-        pathname: linkPath,
-        query: {
-          pid: pageNext,
-          User:User
-        }
-      }}> Next </Link>
-  }else{
 
-  return ( pageNext > 0 ? 
-    <Link
+  return <Link
       href={{
         pathname: linkPath,
         query: {
           pid: pageNext,
           User: User 
         }
-      }}> Prev </Link>
-      :
-      <div className='invisible'> Prev </div>)
-  }
+      }} passHref>
+      <a className={`${pageNext > 0 ? 'visible' : 'invisible'} bg-gray-600 text-white p-4 rounded-xl`}>{direction ? 'Next': 'Prev'}</a></Link>
 }
 
 export default NavButton

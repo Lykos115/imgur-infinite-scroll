@@ -59,6 +59,7 @@ const AlbumCards = (props:any) => {
   const { data, error } = useSWR(apiURL, fetcher)
   if(error) return <Error />
   if(!data) return <Loading />
+  if(data.response.length === 0) return <Error />
 
   const albums = data?.response?.map((item:itemType) => {
     return (
