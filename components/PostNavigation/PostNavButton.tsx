@@ -34,7 +34,7 @@ const PostNavButton = (props: any) => {
           User: User,
           post: postIdDirection
         }
-      }}> Next </Link>
+      }} passHref><a className='bg-gray-600 text-white p-4 rounded-xl'>Next</a></Link>
   }else{
     return ( disabledButton ? 
       <Link
@@ -45,7 +45,7 @@ const PostNavButton = (props: any) => {
             User: User,
             post: postIdDirection
           }
-        }}> Prev </Link>
+        }} passHref><a className='bg-gray-600 text-white p-4 rounded-xl'>Prev</a></Link>
       :
       <div className='invisible'> Prev </div>
     )
