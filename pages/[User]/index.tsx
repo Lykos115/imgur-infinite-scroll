@@ -27,12 +27,12 @@ const Infinite = () => {
 
 
   if(!paginatedData) return <PageLoader />
+
   const albumsFlat = paginatedData?.flat()
 
-  const isEnd = paginatedData && paginatedData[paginatedData.length - 1]?.length < 50 
-  
-  //const loadingAlbums = paginatedData && typeof paginatedData[size - 1] === "undefined"
+  if(albumsFlat.length === 0) return <Error />
 
+  const isEnd = paginatedData && paginatedData[paginatedData.length - 1]?.length < 50 
 
   const albums = albumsFlat.map((item:any) => {
     return (
