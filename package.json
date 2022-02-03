@@ -12,10 +12,11 @@
     "@heroicons/react": "^1.0.5",
     "axios": "^0.24.0",
     "framer-motion": "^6.0.0",
-    "next": "12.0.7",
+    "next": "^12.0.10",
     "next-auth": "^4.0.6",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-lazyload": "^3.2.0",
     "swr": "^1.1.2"
   },
