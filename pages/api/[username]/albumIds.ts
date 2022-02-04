@@ -19,7 +19,17 @@ export default async (req: NextApiRequest, res:NextApiResponse<Data>) => {
   await axios
     .get(url, headers)
     .then(({ data }) => {
-      const  response = data.data.map((item:any) => item.id)
+      
+    const isNull = (value:any) => {
+      return value !== null
+    }
+
+      const  response = data.data.map((item:any) => {
+        if(item.layout){
+          return item.id
+        }
+        return null
+      }).filter(isNull)
       res.status(200).json({response} as Data);
     })
     .catch(({ err }) =>{
