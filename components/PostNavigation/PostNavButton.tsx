@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 const PostNavButton = (props: any) => {
 
   const router = useRouter()
-  const { User, pid } = router.query 
+  const { User, pid, post } = router.query 
   const linkPath = router.pathname
   
   const nextPosition = props.nextPosition > 59 ? 0 : props.nextPosition
@@ -24,8 +24,8 @@ const PostNavButton = (props: any) => {
 
   const disabledButton = props.direction ?  (props.nextArr) : ((!props.prevArr && props.currPosition !== 0 || Number(pid) !== 1) )
 
-  if(props.direction){
 
+  if(props.direction){
     return <Link
       href={{
         pathname: linkPath,
@@ -34,7 +34,7 @@ const PostNavButton = (props: any) => {
           User: User,
           post: postIdDirection
         }
-      }} replace={true} passHref><a className='bg-gray-600 text-white p-4 rounded-xl'>Next</a></Link>
+      }} replace={true} passHref><a className={`${(props.currArr.length - 1 === props.currArr.indexOf(post) && props.currArr.length < 60 ) ? 'invisible' : 'visible'} bg-gray-600 text-white p-4 rounded-xl`}>Next</a></Link>
   }else{
     return ( disabledButton ? 
       <Link
