@@ -32,7 +32,7 @@ const Infinite = () => {
 
   if(albumsFlat.length === 0) return <Error />
 
-  const isEnd = paginatedData && paginatedData[paginatedData.length - 1]?.length < 50 
+  const isEnd = paginatedData && paginatedData[paginatedData.length - 1]?.length < 59 
 
   const albums = albumsFlat.map((item:any) => {
     return (
