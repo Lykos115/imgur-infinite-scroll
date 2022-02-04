@@ -4,7 +4,11 @@ import HomeIcon from './HomeIcon'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-const Navigation = () => {
+type NavType = {
+  isEnd: boolean
+}
+
+const Navigation = ({isEnd}: NavType) => {
   const router = useRouter()
   const { User } = router.query
   return (
@@ -16,7 +20,7 @@ const Navigation = () => {
       </div>
       <AlbumSearchUser />
       <div className='order-3 md:order-none'>
-        <NavButton direction={true} />
+        <NavButton direction={true} isEnd={isEnd}/>
       </div>
       <div className='hidden md:block md:order-last md:text-4xl'>
         <Link href={'/' + User}> &infin; </Link>
